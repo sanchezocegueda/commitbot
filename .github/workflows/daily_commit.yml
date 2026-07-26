@@ -2,7 +2,7 @@ name: daily-commits
 
 on:
   schedule:
-    - cron: 30 23 * * *
+    - cron: 0 15 * * *
   workflow_dispatch:
 
 jobs:

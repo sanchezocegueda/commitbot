@@ -11,6 +11,8 @@ def main():
 
         # Write contents to file
         with open(FILE_NAME, "a") as f:
+
+            # Date + commit number
             msg = f"{datetime.date.today()}: Commit {i+1}/{num_commits}." 
 
             subprocess.run(ECHO + [msg])

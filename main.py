@@ -30,14 +30,14 @@ def main():
         try:
             subprocess.run(GIT_COMMIT + [msg], check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
-            print(f"Commit failed: {e}")
+            print(f"Commit failed: {e}, {e.stderr}")
             raise
 
     # git push
     try:
         subprocess.run(GIT_PUSH, check=True, capture_output=True, text=True)
     except subprocess.CalledProcessError as e:
-        print(f"Push failed: {e}")
+        print(f"Push failed: {e}, {e.stderr}")
         raise
 
 

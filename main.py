@@ -1,5 +1,5 @@
 from config import *
-import config, random, datetime, subprocess, time
+import random, datetime, subprocess, time
 
 
 def main():
@@ -8,16 +8,37 @@ def main():
     num_commits = random.randint(MIN_COMMITS, MAX_COMMITS)
 
     for i in range(num_commits):
-        with open(FILE_NAME, "a") as f:
-            msg = f"{datetime.date.today()}: Commit {i+1}/{num_commits}.\n" 
-            subprocess.run(ECHO + [msg])
-            f.write(msg)
-            
-            subprocess.run(GIT_ADD + [FILE_NAME])
-            subprocess.run(GIT_COMMIT + [msg])
-            time.sleep(2)
 
-    subprocess.run(GIT_PUSH)
+        # Write contents to file
+        with open(FILE_NAME, "a") as f:
+            msg = f"{datetime.date.today()}: Commit {i+1}/{num_commits}." 
+
+            subprocess.run(ECHO + [msg])
+
+            f.write(msg + "\n")
+
+        time.sleep(1)
+
+        # git add            
+        try:
+            subprocess.run(GIT_ADD + [FILE_NAME], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Add failed: {e}, {e.stderr}")
+            raise
+
+        # git commit
+        try:
+            subprocess.run(GIT_COMMIT + [msg], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Commit failed: {e}")
+            raise
+
+    # git push
+    try:
+        subprocess.run(GIT_PUSH, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Push failed: {e}")
+        raise
 
 
     return

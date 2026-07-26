@@ -4,6 +4,20 @@ import random, datetime, subprocess, time
 
 def main():
 
+    # Configure git username
+    try:
+        subprocess.run(GIT_CONFIG_NAME + [GITHUB_NAME], check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Config GitHub name failed: {e}, {e.stderr}")
+        raise
+
+    # Configure git email
+    try:
+        subprocess.run(GIT_CONFIG_EMAIL + [GITHUB_EMAIL], check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Config GitHub email failed: {e}, {e.stderr}")
+        raise
+
     # Randomly selected number of commits to perform for the day
     num_commits = random.randint(MIN_COMMITS, MAX_COMMITS)
 
